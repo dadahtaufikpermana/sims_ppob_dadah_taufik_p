@@ -1,30 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sims_ppob_dadah_taufik_p/extensions/context_extensions.dart';
+import 'package:sims_ppob_dadah_taufik_p/screens/registration/widget/registration_form_widget.dart';
 
-import '../../../routes/routes.dart';
 import '../../../utils/provider/prefference_setting_provider.dart';
 import '../../../utils/style.dart';
 import '../../../widget/button_widget.dart';
-import 'login_form_widget.dart';
+import '../../routes/routes.dart';
+import '../login/widget/login_form_widget.dart';
 
-class LoginContent extends StatefulWidget {
-  const LoginContent({super.key});
+class RegistrationContent extends StatefulWidget {
+  const RegistrationContent({super.key});
 
   @override
-  State<LoginContent> createState() => _LoginContentState();
+  State<RegistrationContent> createState() => _LoginContentState();
 }
 
-class _LoginContentState extends State<LoginContent> {
+class _LoginContentState extends State<RegistrationContent> {
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
   late TextEditingController _email;
   late TextEditingController _password;
+  late TextEditingController _firstName;
+  late TextEditingController _lastName;
+  late TextEditingController _confirmPassword;
 
   @override
   void initState() {
     super.initState();
     _email = TextEditingController();
     _password = TextEditingController();
+    _firstName = TextEditingController();
+    _lastName = TextEditingController();
+    _confirmPassword = TextEditingController();
   }
 
   @override
@@ -60,7 +67,7 @@ class _LoginContentState extends State<LoginContent> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const SizedBox(height: 160.0),
+            const SizedBox(height: 80.0),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 26.0),
               child: Column(
@@ -86,7 +93,7 @@ class _LoginContentState extends State<LoginContent> {
                   ),
                   const SizedBox(height: 40.0),
                   Text(
-                    'Masuk atau buat akun untuk memulai',
+                    'Lengkapi data untuk membuat akun',
                     style: theme.textTheme.headline4!.copyWith(
                       fontSize: 32,
                       color: blackColor,
@@ -96,15 +103,18 @@ class _LoginContentState extends State<LoginContent> {
                   const SizedBox(height: 38.0),
                   Form(
                     key: _formState,
-                    child: LoginFormWidget(
+                    child: RegistrationFormWidget(
                       emailController: _email,
                       passwordController: _password,
+                      firstNameController: _firstName,
+                      lastNameController: _lastName,
+                      confirmEmailController: _confirmPassword,
                     ),
                   ),
                   const SizedBox(height: 32.0),
                   ButtonWidget(
                     onPress: () => onPressSignInButton(),
-                    title: 'Masuk',
+                    title: 'Registrasi',
                     buttonColor: Colors.redAccent,
                     titleColor: whiteColor,
                     borderColor: orangeColor,
@@ -116,7 +126,7 @@ class _LoginContentState extends State<LoginContent> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Belum punya akun? registrasi",
+                        "Sudah punya akun? login",
                         style: context.theme.textTheme.subtitle2!.copyWith(
                           color: blackColor20,
                           fontSize: 12,
@@ -125,7 +135,7 @@ class _LoginContentState extends State<LoginContent> {
                       InkWell(
                         onTap: () => Navigator.pushNamed(
                           context,
-                          Routes.registrationScreen,
+                          Routes.loginScreen,
                         ),
                         child: Text(
                           ' di sini',
