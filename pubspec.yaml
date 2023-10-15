@@ -36,6 +36,7 @@ dependencies:
   shared_preferences: ^2.2.2
   hexcolor: ^3.0.1
   intl: ^0.18.1
+  http: ^1.1.0
   inspection:
     git:
       url: https://github.com/radensaleh/inspection.git

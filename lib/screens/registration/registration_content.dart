@@ -6,8 +6,8 @@ import 'package:sims_ppob_dadah_taufik_p/screens/registration/widget/registratio
 import '../../../utils/provider/prefference_setting_provider.dart';
 import '../../../utils/style.dart';
 import '../../../widget/button_widget.dart';
+import '../../data/api/api_service.dart';
 import '../../routes/routes.dart';
-import '../login/widget/login_form_widget.dart';
 
 class RegistrationContent extends StatefulWidget {
   const RegistrationContent({super.key});
@@ -41,21 +41,42 @@ class _RegistrationContentState extends State<RegistrationContent> {
     super.dispose();
   }
 
-  void onPressSignInButton() {
+  void onPressSignInButton() async {
     if (_formState.currentState?.validate() == true) {
-      context.showCustomFlashMessage(
-        status: 'success',
-        title: 'Login Success!',
-        positionBottom: false,
-      );
-      // Future.delayed(const Duration(seconds: 1)).then(
-      //       (_) => Navigator.pushNamed(
-      //     context,
-      //     Routes.homeScreen,
-      //   ),
-      // );
+      final apiService = ApiService();
+
+      try {
+        final response = await apiService.registerUser(
+          email: _email.text,
+          firstName: _firstName.text,
+          lastName: _lastName.text,
+          password: _password.text,
+        );
+
+        if (response['status'] == 0) {
+          context.showCustomFlashMessage(
+            status: 'success',
+            title: 'Registrasi berhasil. Silakan login.',
+            positionBottom: false,
+          );
+          Navigator.pushNamed(context, Routes.loginScreen);
+        } else {
+          context.showCustomFlashMessage(
+            status: 'error',
+            title: response['message'],
+            positionBottom: false,
+          );
+        }
+      } catch (error) {
+        context.showCustomFlashMessage(
+          status: 'error',
+          title: 'Gagal melakukan registrasi.',
+          positionBottom: false,
+        );
+      }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
