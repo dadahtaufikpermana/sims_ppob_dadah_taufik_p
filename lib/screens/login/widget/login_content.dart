@@ -41,12 +41,12 @@ class _LoginContentState extends State<LoginContent> {
         title: 'Login Success!',
         positionBottom: false,
       );
-      // Future.delayed(const Duration(seconds: 1)).then(
-      //       (_) => Navigator.pushNamed(
-      //     context,
-      //     Routes.homeScreen,
-      //   ),
-      // );
+      Future.delayed(const Duration(seconds: 1)).then(
+            (_) => Navigator.pushNamed(
+          context,
+          Routes.homeScreen,
+        ),
+      );
     }
   }
 

@@ -13,10 +13,10 @@ class RegistrationContent extends StatefulWidget {
   const RegistrationContent({super.key});
 
   @override
-  State<RegistrationContent> createState() => _LoginContentState();
+  State<RegistrationContent> createState() => _RegistrationContentState();
 }
 
-class _LoginContentState extends State<RegistrationContent> {
+class _RegistrationContentState extends State<RegistrationContent> {
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
   late TextEditingController _email;
   late TextEditingController _password;
