@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sims_ppob_dadah_taufik_p/extensions/context_extensions.dart';
 
+import '../../../data/api/api_service.dart';
 import '../../../routes/routes.dart';
 import '../../../utils/provider/prefference_setting_provider.dart';
 import '../../../utils/style.dart';
@@ -34,19 +35,41 @@ class _LoginContentState extends State<LoginContent> {
     super.dispose();
   }
 
-  void onPressSignInButton() {
+  void onPressSignInButton() async {
     if (_formState.currentState?.validate() == true) {
-      context.showCustomFlashMessage(
-        status: 'success',
-        title: 'Login Success!',
-        positionBottom: false,
-      );
-      Future.delayed(const Duration(seconds: 1)).then(
-            (_) => Navigator.pushNamed(
-          context,
-          Routes.homeScreen,
-        ),
-      );
+      final apiService = ApiService();
+      final email = _email.text;
+      final password = _password.text;
+
+      final response = await apiService.loginUser(email: email, password: password);
+
+      if (response is String) {
+        if (response.isEmpty) {
+          context.showCustomFlashMessage(
+            status: 'error',
+            title: 'Gagal login.',
+            positionBottom: false,
+          );
+        } else {
+          context.showCustomFlashMessage(
+            status: 'error',
+            title: response,
+            positionBottom: false,
+          );
+        }
+      } else {
+        context.showCustomFlashMessage(
+          status: 'success',
+          title: 'Login Success!',
+          positionBottom: false,
+        );
+        Future.delayed(const Duration(seconds: 1)).then(
+              (_) => Navigator.pushNamed(
+            context,
+            Routes.homeScreen,
+          ),
+        );
+      }
     }
   }
 
