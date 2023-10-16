@@ -19,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: CustomBottomNavigationBar(
         onTabSelected: _onItemTapped,
         currentIndex: _currentIndex,
+        context: context,
       ),
     );
   }
