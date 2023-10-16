@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class PreferenceSettingsProvider extends ChangeNotifier {
   String? firstName;
+  String? email;
   String? lastName;
   String? profileImage;
   String? jwtToken;
@@ -23,6 +24,11 @@ class PreferenceSettingsProvider extends ChangeNotifier {
   //  method untuk mengupdate nama belakang
   void setLastName(String name) {
     lastName = name;
+    notifyListeners();
+  }
+
+  void setEmail(String name) {
+    email = name;
     notifyListeners();
   }
 

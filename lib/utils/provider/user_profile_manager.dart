@@ -22,6 +22,7 @@ class UserProfileManager {
       preferenceSettingsProvider.profileImage = profileData.data.profileImage;
       preferenceSettingsProvider.firstName = profileData.data.firstName;
       preferenceSettingsProvider.lastName = profileData.data.lastName;
+      preferenceSettingsProvider.email = profileData.data.email;
     } catch (error) {}
   }
 

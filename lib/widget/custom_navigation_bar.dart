@@ -37,6 +37,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           Routes.transactionScreen,
         );
       } else if (index == 3) {
+        Navigator.pushNamed(
+          widget.context,
+          Routes.profileScreen,
+        );
       } else {
         setState(() {
           widget.onTabSelected(index);

@@ -9,10 +9,10 @@ class TransactionScreen extends StatefulWidget {
   const TransactionScreen({Key? key}) : super(key: key);
 
   @override
-  _TopupScreenState createState() => _TopupScreenState();
+  _TransactionScreenState createState() => _TransactionScreenState();
 }
 
-class _TopupScreenState extends State<TransactionScreen> {
+class _TransactionScreenState extends State<TransactionScreen> {
   int _currentIndex = 2;
 
   void _onItemTapped(int index) {
