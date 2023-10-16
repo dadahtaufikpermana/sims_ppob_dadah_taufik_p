@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:sims_ppob_dadah_taufik_p/routes/routes.dart';
 import 'package:sims_ppob_dadah_taufik_p/screens/home/home_screen.dart';
+import 'package:sims_ppob_dadah_taufik_p/screens/home/payment_screen.dart';
 import 'package:sims_ppob_dadah_taufik_p/screens/profile/profile_screen.dart';
 import 'package:sims_ppob_dadah_taufik_p/screens/registration/registration_screen.dart';
 import 'package:sims_ppob_dadah_taufik_p/screens/topup_screen/topup_screen.dart';
@@ -14,5 +15,6 @@ Map<String, WidgetBuilder> routesApp = {
   Routes.homeScreen: (_) => const HomeScreen(),
   Routes.topupScreen: (_) => const TopupScreen(),
   Routes.transactionScreen: (_) => const TransactionScreen(),
-  Routes.profileScreen: (_) => const ProfileScreen()
+  Routes.profileScreen: (_) => const ProfileScreen(),
+  Routes.paymentScreen: (_) => const PaymentScreen()
 };

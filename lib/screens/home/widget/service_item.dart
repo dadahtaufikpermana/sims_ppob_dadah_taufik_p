@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sims_ppob_dadah_taufik_p/data/models/service_model.dart';
 
+import '../../../routes/routes.dart';
+
 class ServiceItem extends StatelessWidget {
   final ServiceModel service;
 
@@ -11,7 +13,16 @@ class ServiceItem extends StatelessWidget {
     final firstWord = service.serviceName.split(' ')[0]; // Mengambil kata pertama karena data actual nya terlalu panjang
 
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          Routes.paymentScreen,
+          arguments: {
+            'icon': service.serviceIcon,
+            'name': service.serviceName,
+          },
+        );
+      },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

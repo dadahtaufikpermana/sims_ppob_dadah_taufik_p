@@ -5,4 +5,5 @@ class Routes {
   static const topupScreen = "topup_screen";
   static const transactionScreen = "transaction_screen";
   static const profileScreen = "profile_screen";
+  static const paymentScreen = "payment_screen";
 }

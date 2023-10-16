@@ -7,7 +7,6 @@ class PreferenceSettingsProvider extends ChangeNotifier {
   String? profileImage;
   String? jwtToken;
   int? balance;
-  String? service_name;
 
   //  method untuk mengupdate JWT token
   void setJwtToken(String token) {
