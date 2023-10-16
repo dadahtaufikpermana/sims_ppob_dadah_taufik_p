@@ -2,6 +2,11 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import '../models/balance_model.dart';
+import '../models/banner_model.dart';
+import '../models/profile_model.dart';
+import '../models/service_model.dart';
+
 class ApiService {
   final String baseUrl = "https://take-home-test-api.nutech-integrasi.app";
 
@@ -54,13 +59,112 @@ class ApiService {
 
     if (response.statusCode == 200) {
       final responseData = json.decode(response.body);
-      return responseData;
+      final jwtToken = responseData['data']['token'];
+      return jwtToken;
     } else if (response.statusCode == 400) {
       final responseData = json.decode(response.body);
-      return responseData['message'];
+      throw Exception(responseData['message']);
     } else if (response.statusCode == 401) {
       final responseData = json.decode(response.body);
-      return responseData['message'];
+      throw Exception(responseData['message']);
+    }
+  }
+
+  Future<ProfileModel> getProfile(String jwtToken) async {
+    final url = '$baseUrl/profile';
+
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer $jwtToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+      final data = responseData['data'];
+
+      return ProfileModel(
+        status: responseData['status'],
+        message: responseData['message'],
+        data: ProfileData.fromJson(data),
+      );
+    } else {
+      throw Exception('Gagal mengambil data profil');
+    }
+  }
+
+  Future<BalanceModel> getBalance(String jwtToken) async {
+    final url = '$baseUrl/balance';
+
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer $jwtToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+      final balanceModel = BalanceModel.fromJson(responseData);
+      return balanceModel;
+    } else {
+      throw Exception('Gagal mengambil saldo');
+    }
+  }
+
+  Future<List<ServiceModel>> getServices(String jwtToken) async {
+    final url = '$baseUrl/services';
+
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer $jwtToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+      final serviceList = responseData['data'] as List<dynamic>;
+
+      List<ServiceModel> services = serviceList.map((serviceData) {
+        return ServiceModel(
+          serviceCode: serviceData['service_code'],
+          serviceName: serviceData['service_name'],
+          serviceIcon: serviceData['service_icon'],
+          serviceTariff: serviceData['service_tariff'],
+        );
+      }).toList();
+
+      return services;
+    } else {
+      throw Exception('Gagal mengambil data layanan');
+    }
+  }
+
+  Future<List<BannerModel>> getBanners(String jwtToken) async {
+    final url = '$baseUrl/banner';
+
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer $jwtToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+      final bannerList = responseData['data'] as List<dynamic>;
+
+      List<BannerModel> banners = bannerList.map((bannerData) {
+        return BannerModel(
+          bannerImage: bannerData['banner_image'],
+        );
+      }).toList();
+
+      return banners;
+    } else {
+      throw Exception('Gagal mengambil data banner');
     }
   }
 }

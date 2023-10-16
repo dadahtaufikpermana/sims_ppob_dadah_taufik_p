@@ -7,6 +7,7 @@ import 'package:sims_ppob_dadah_taufik_p/screens/home/widget/list_service_widget
 
 import '../../../utils/provider/prefference_setting_provider.dart';
 import '../../../utils/style.dart';
+import '../../utils/provider/user_profile_manager.dart'; // Import ApiService
 
 class HomeContent extends StatefulWidget {
   const HomeContent({super.key});
@@ -16,9 +17,27 @@ class HomeContent extends StatefulWidget {
 }
 
 class _HomeContentState extends State<HomeContent> {
+  late UserProfileManager userProfileManager;
+
   @override
   void initState() {
     super.initState();
+    // Mengambil profil user setelah inisialisasi widget
+    userProfileManager = UserProfileManager(context);
+    _fetchUserProfile();
+  }
+
+  // Fungsi untuk mengambil profil user
+  void _fetchUserProfile() async {
+    final preferenceSettingsProvider =
+        Provider.of<PreferenceSettingsProvider>(context, listen: false);
+
+    try {
+      final jwtToken = preferenceSettingsProvider.jwtToken;
+      await userProfileManager.fetchUserProfile(jwtToken!);
+    } catch (error) {
+      // Handle error
+    }
   }
 
   @override
@@ -59,8 +78,12 @@ class _HomeContentState extends State<HomeContent> {
                         ),
                       ),
                       Spacer(),
-                      Image.asset('assets/mobile_assets/Profile Photo-1.png',
-                          height: 30, width: 30),
+                      Image.asset(
+                        // preferenceSettingsProvider.profileImage ??
+                        'assets/mobile_assets/Profile Photo-1.png',
+                        height: 30,
+                        width: 30,
+                      ),
                     ],
                   ),
                   const SizedBox(height: 40.0),
@@ -74,7 +97,7 @@ class _HomeContentState extends State<HomeContent> {
                   ),
                   const SizedBox(height: 4.0),
                   Text(
-                    'Kristanto Wibowo,',
+                    '${preferenceSettingsProvider.firstName} ${preferenceSettingsProvider.lastName},',
                     style: theme.textTheme.headline4!.copyWith(
                       fontSize: 30,
                       color: blackColor,
@@ -88,16 +111,17 @@ class _HomeContentState extends State<HomeContent> {
                   Text(
                     'Temukan Promo Terbaik',
                     style: theme.textTheme.headline4!.copyWith(
-                        fontSize: 12,
-                        color: blackColor,
-                        fontWeight: FontWeight.w500),
+                      fontSize: 12,
+                      color: blackColor,
+                      fontWeight: FontWeight.w500,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 12.0),
                   ListPromoWidget(),
                 ],
               ),
-            )
+            ),
           ],
         );
       },

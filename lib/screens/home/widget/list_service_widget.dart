@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sims_ppob_dadah_taufik_p/screens/home/widget/service_item.dart';
+
+import '../../../utils/provider/service_model_provider.dart'; // Import widget ServiceItem
 
 class ListServiceWidget extends StatelessWidget {
-  //untuk slicing sementara
   @override
   Widget build(BuildContext context) {
+    final serviceProvider = Provider.of<ServiceProvider>(context); // Ambil data layanan dari ServiceProvider
+    final services = serviceProvider.services;
+
     final servicesPerRow = 6;
     final rowCount = (services.length / servicesPerRow).ceil();
 
@@ -14,59 +20,10 @@ class ListServiceWidget extends StatelessWidget {
               .skip(row * servicesPerRow)
               .take(servicesPerRow)
               .map((service) {
-            return GestureDetector(
-              onTap: () {},
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 8),
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Image.asset(service.icon),
-                  ),
-                  SizedBox(height: 8),
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      service.name,
-                      style: TextStyle(fontSize: 12),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                ],
-              ),
-            );
+            return ServiceItem(service: service);
           }).toList(),
         );
       }).toList(),
     );
   }
 }
-
-class Service {
-  final String icon;
-  final String name;
-
-  Service(this.icon, this.name);
-}
-
-final services = [
-  Service("assets/mobile_assets/PBB.png", 'PBB'),
-  Service('assets/mobile_assets/Listrik.png', 'Listrik'),
-  Service('assets/mobile_assets/Pulsa.png', 'Pulsa'),
-  Service('assets/mobile_assets/PDAM.png', 'PDAM'),
-  Service('assets/mobile_assets/PGN.png', 'PGN'),
-  Service('assets/mobile_assets/Televisi.png', 'Televisi'),
-  Service('assets/mobile_assets/Musik.png', 'Musik'),
-  Service('assets/mobile_assets/Game.png', 'Game'),
-  Service('assets/mobile_assets/Makanan.png', 'Makanan'),
-  Service('assets/mobile_assets/Kurban.png', 'Kurban'),
-  Service('assets/mobile_assets/Zakat.png', 'Zakat'),
-  Service('assets/mobile_assets/Data.png', 'Data'),
-];

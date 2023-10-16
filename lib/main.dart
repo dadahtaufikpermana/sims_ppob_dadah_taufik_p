@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:sims_ppob_dadah_taufik_p/routes/register_routes.dart';
 import 'package:sims_ppob_dadah_taufik_p/routes/routes.dart';
 import 'package:sims_ppob_dadah_taufik_p/utils/navigation.dart';
+import 'package:sims_ppob_dadah_taufik_p/utils/provider/banner_provider.dart';
 import 'package:sims_ppob_dadah_taufik_p/utils/provider/prefference_setting_provider.dart';
+import 'package:sims_ppob_dadah_taufik_p/utils/provider/service_model_provider.dart';
 
 void main() {
   runApp(
@@ -12,6 +14,8 @@ void main() {
         ChangeNotifierProvider(
           create: (_) => PreferenceSettingsProvider(),
         ),
+        ChangeNotifierProvider(create: (_) => ServiceProvider()),
+        ChangeNotifierProvider(create: (_) => BannerProvider()),
       ],
       child: const MyApp(),
     ),
