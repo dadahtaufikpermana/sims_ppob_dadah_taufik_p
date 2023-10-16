@@ -37,6 +37,7 @@ dependencies:
   hexcolor: ^3.0.1
   intl: ^0.18.1
   http: ^1.1.0
+  easy_splash_screen: 1.0.4
   inspection:
     git:
       url: https://github.com/radensaleh/inspection.git

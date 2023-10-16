@@ -54,12 +54,14 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                 });
               },
               textInputAction: TextInputAction.done,
-              validator: (e) => inspection(
-                e,
-                'required',
-                message: 'Password harus di isi',
-                locale: Intl.getCurrentLocale(),
-              ),
+              validator: (password) {
+                if (password!.isEmpty) {
+                  return 'Password harus diisi';
+                } else if (password.length < 8) {
+                  return 'Panjang password harus minimal 8 karakter';
+                }
+                return null; // Password valid
+              },
               prefixIcon: Icon(Icons.lock_outline),
               child: const FormLabelFieldWidget(),
             ),

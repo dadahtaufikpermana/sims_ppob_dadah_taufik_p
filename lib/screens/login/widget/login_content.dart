@@ -43,7 +43,6 @@ class _LoginContentState extends State<LoginContent> {
   Future<void> _saveTokenLocally(String jwtToken) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('jwtToken', jwtToken);
-    print('JWT Token saved: $jwtToken'); // Tambahkan pernyataan ini
   }
 
 

@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
           title: 'SIMS PPOB',
           theme: ThemeData.light(),
           navigatorKey: navigatorKey,
-          initialRoute: Routes.loginScreen,
+          initialRoute: Routes.splashScreen,
           routes: routesApp,
           debugShowCheckedModeBanner: false,
         );
