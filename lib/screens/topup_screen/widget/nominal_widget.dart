@@ -19,7 +19,6 @@ class NominalWidget extends StatefulWidget {
 }
 
 class _NominalWidgetState extends State<NominalWidget> {
-  bool passwordVisible = true;
 
   String? _validateNominal(String? value) {
     final isNotEmpty = inspection(value, 'required|', message: '');
@@ -30,6 +29,10 @@ class _NominalWidgetState extends State<NominalWidget> {
     final nominal = double.tryParse(value ?? '0.0');
     if (nominal == null || nominal < 10000) {
       return 'Minimal topup adalah 10.000';
+    }
+
+    if (nominal > 1000000) {
+      return 'Maksimal topup adalah 1.000.000';
     }
 
     return null;
@@ -57,3 +60,4 @@ class _NominalWidgetState extends State<NominalWidget> {
     );
   }
 }
+

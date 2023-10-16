@@ -6,6 +6,7 @@ import '../models/balance_model.dart';
 import '../models/banner_model.dart';
 import '../models/profile_model.dart';
 import '../models/service_model.dart';
+import '../models/topup_model.dart';
 
 class ApiService {
   final String baseUrl = "https://take-home-test-api.nutech-integrasi.app";
@@ -167,4 +168,34 @@ class ApiService {
       throw Exception('Gagal mengambil data banner');
     }
   }
+
+  Future<TopUpModel> doTopUp(String jwtToken, double topUpAmount) async {
+    if (topUpAmount < 10000 || topUpAmount > 1000000) {
+      throw Exception('Nominal top up harus antara 10.000 dan 1.000.000');
+    }
+
+    final url = '$baseUrl/topup';
+
+    final Map<String, dynamic> data = {
+      "top_up_amount": topUpAmount,
+    };
+
+    final response = await http.post(
+      Uri.parse(url),
+      body: json.encode(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $jwtToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+      return TopUpModel.fromJson(responseData);
+    } else {
+      throw Exception('Gagal melakukan top up');
+    }
+  }
+
+
 }

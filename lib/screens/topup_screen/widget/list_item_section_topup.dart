@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'item_section_topup.dart';
-import 'list_item_section_topup.dart';
 
 class ListTopUpSection extends StatelessWidget {
+  final Function(String) onPressTopUp;
+
+  ListTopUpSection({required this.onPressTopUp});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -14,12 +16,12 @@ class ListTopUpSection extends StatelessWidget {
           shrinkWrap: true,
           childAspectRatio: 2.0,
           children: [
-            TopUpItem('Rp. 10.000'),
-            TopUpItem('Rp. 20.000'),
-            TopUpItem('Rp. 50.000'),
-            TopUpItem('Rp. 100.000'),
-            TopUpItem('Rp. 200.000'),
-            TopUpItem('Rp. 250.000'),
+            TopUpItem('Rp. 10.000', onPressTopUp),
+            TopUpItem('Rp. 20.000', onPressTopUp),
+            TopUpItem('Rp. 50.000', onPressTopUp),
+            TopUpItem('Rp. 100.000', onPressTopUp),
+            TopUpItem('Rp. 200.000', onPressTopUp),
+            TopUpItem('Rp. 250.000', onPressTopUp),
           ],
         ),
       ],

@@ -1,15 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TopUpItem extends StatelessWidget {
   final String nominal;
+  final Function(String) onPressTopUp;
 
-  TopUpItem(this.nominal);
+  TopUpItem(this.nominal, this.onPressTopUp);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        onPressTopUp(nominal); // Panggil onPressTopUp dengan nilai nominal yang dipilih
+      },
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
@@ -27,4 +29,3 @@ class TopUpItem extends StatelessWidget {
     );
   }
 }
-

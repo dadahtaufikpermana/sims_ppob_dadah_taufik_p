@@ -7,47 +7,85 @@ import 'package:sims_ppob_dadah_taufik_p/screens/topup_screen/widget/nominal_wid
 
 import '../../../utils/provider/prefference_setting_provider.dart';
 import '../../../utils/style.dart';
+import '../../data/api/api_service.dart';
 import '../../utils/provider/user_profile_manager.dart';
 import '../../widget/button_widget.dart';
 
 class TopupContent extends StatefulWidget {
-  const TopupContent({super.key});
+  const TopupContent({Key? key}) : super(key: key);
 
   @override
-  State<TopupContent> createState() => _HomeContentState();
+  State<TopupContent> createState() => _TopupContentState();
 }
 
-class _HomeContentState extends State<TopupContent> {
+class _TopupContentState extends State<TopupContent> {
   late UserProfileManager userProfileManager;
   final GlobalKey<FormState> _formState = GlobalKey<FormState>();
   late TextEditingController _nominalTopup;
+  double? selectedNominal;
 
   @override
   void initState() {
     super.initState();
-    // Mengambil profil user setelah inisialisasi widget
     userProfileManager = UserProfileManager(context);
-    _fetchUserProfile();
     _nominalTopup = TextEditingController();
-  }
-
-  // Fungsi untuk mengambil profil user
-  void _fetchUserProfile() async {
-    final preferenceSettingsProvider =
-    Provider.of<PreferenceSettingsProvider>(context, listen: false);
-
-    try {
-      final jwtToken = preferenceSettingsProvider.jwtToken;
-      await userProfileManager.fetchUserProfile(jwtToken!);
-    } catch (error) {
-      // Handle error
-    }
   }
 
   @override
   void dispose() {
     super.dispose();
   }
+
+  void onTopUpSelected(int nominal) {
+    setState(() {
+      selectedNominal = nominal.toDouble();
+      _nominalTopup.text = nominal.toString();
+    });
+  }
+
+  void onPressTopUpButton() async {
+    if (_formState.currentState?.validate() == true) {
+      final apiService = ApiService();
+      final jwtToken = userProfileManager.getJwtToken();
+
+      if (jwtToken != null) {
+        double topUpAmount = double.tryParse(_nominalTopup.text) ?? 0.0;
+
+        if (topUpAmount < 10000) {
+          context.showCustomFlashMessage(
+            status: 'error',
+            title: 'Minimal topup adalah 10.000',
+            positionBottom: false,
+          );
+          return;
+        }
+
+        try {
+          await apiService.doTopUp(jwtToken, topUpAmount);
+
+          context.showCustomFlashMessage(
+            status: 'success',
+            title: 'Top Up Berhasil!',
+            positionBottom: false,
+          );
+          _nominalTopup.clear();
+        } catch (error) {
+          context.showCustomFlashMessage(
+            status: 'error',
+            title: error.toString(),
+            positionBottom: false,
+          );
+        }
+      } else {
+        context.showCustomFlashMessage(
+          status: 'error',
+          title: 'Token JWT tidak tersedia',
+          positionBottom: false,
+        );
+      }
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -122,18 +160,28 @@ class _HomeContentState extends State<TopupContent> {
                       nominalController: _nominalTopup,
                     ),
                   ),
-                  ListTopUpSection(),
-
+                  ListTopUpSection(
+                    onPressTopUp: (nominal) {
+                      _nominalTopup.text = nominal;
+                      onPressTopUpButton();
+                    },
+                  ),
                   const SizedBox(height: 32.0),
                   ButtonWidget(
-                    onPress: () => (),
+                    onPress: _nominalTopup.text.isNotEmpty ? onPressTopUpButton! : () {},
                     title: 'Top Up',
-                    buttonColor: Colors.grey,
+                    buttonColor: selectedNominal != null
+                        ? theme.primaryColor
+                        : Colors.grey,
                     titleColor: whiteColor,
-                    borderColor: Colors.grey,
+                    borderColor: selectedNominal != null
+                        ? theme.primaryColor
+                        : Colors.grey,
                     paddingHorizontal: 22.0,
                     paddingVertical: 16.0,
-                  ),
+                  )
+
+
                 ],
               ),
             ),
