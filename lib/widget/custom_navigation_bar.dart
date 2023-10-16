@@ -32,6 +32,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           Routes.topupScreen,
         );
       } else if (index == 2) {
+        Navigator.pushNamed(
+          widget.context,
+          Routes.transactionScreen,
+        );
       } else if (index == 3) {
       } else {
         setState(() {

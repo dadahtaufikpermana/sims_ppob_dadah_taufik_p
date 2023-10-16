@@ -3,4 +3,5 @@ class Routes {
   static const registrationScreen = "registration_screen";
   static const homeScreen = "home_screen";
   static const topupScreen = "topup_screen";
+  static const transactionScreen = "transaction_screen";
 }
