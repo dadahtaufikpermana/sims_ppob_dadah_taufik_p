@@ -105,8 +105,8 @@ class _HomeContentState extends State<HomeContent> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32.0),
-                  BalanceWidget(),
-                  const SizedBox(height: 38.0),
+                BalanceWidget(jwtToken: preferenceSettingsProvider.jwtToken ?? "DefaultString"),
+                const SizedBox(height: 38.0),
                   ListServiceWidget(),
                   Text(
                     'Temukan Promo Terbaik',

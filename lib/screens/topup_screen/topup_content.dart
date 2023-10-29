@@ -46,7 +46,9 @@ class _TopupContentState extends State<TopupContent> {
   void onPressTopUpButton() async {
     if (_formState.currentState?.validate() == true) {
       final apiService = ApiService();
-      final jwtToken = userProfileManager.getJwtToken();
+      final preferenceSettingsProvider = Provider.of<PreferenceSettingsProvider>(context, listen: false);
+      final jwtToken = preferenceSettingsProvider.jwtToken; // Mengambil jwtToken dari PreferenceSettingsProvider
+      userProfileManager.fetchBalance(jwtToken!);
 
       if (jwtToken != null) {
         double topUpAmount = double.tryParse(_nominalTopup.text) ?? 0.0;
@@ -61,7 +63,7 @@ class _TopupContentState extends State<TopupContent> {
         }
 
         try {
-          await apiService.doTopUp(jwtToken, topUpAmount);
+          await apiService.doTopUp(jwtToken as String, topUpAmount);
 
           context.showCustomFlashMessage(
             status: 'success',
@@ -135,7 +137,7 @@ class _TopupContentState extends State<TopupContent> {
                     ],
                   ),
                   const SizedBox(height: 16.0),
-                  BalanceWidget(),
+                  BalanceWidget(jwtToken: preferenceSettingsProvider.jwtToken ?? "DefaultString"),
                   const SizedBox(height: 40.0),
                   Text(
                     'Silahkan masukan',

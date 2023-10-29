@@ -38,6 +38,9 @@ dependencies:
   intl: ^0.18.1
   http: ^1.1.0
   easy_splash_screen: 1.0.4
+  image_picker: ^1.0.4
+  http_parser: ^4.0.2
+  path: ^1.8.3
   inspection:
     git:
       url: https://github.com/radensaleh/inspection.git

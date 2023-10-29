@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io';
 import 'package:sims_ppob_dadah_taufik_p/extensions/context_extensions.dart';
 import 'package:sims_ppob_dadah_taufik_p/screens/profile/widget/profile_form_widget.dart';
 
 import '../../../utils/provider/prefference_setting_provider.dart';
 import '../../../utils/style.dart';
+import '../../data/api/api_service.dart';
 import '../../routes/routes.dart';
+import '../../utils/provider/profile_image_provider.dart';
 import '../../utils/provider/user_profile_manager.dart';
 import '../../widget/button_widget.dart';
-import '../registration/widget/registration_form_widget.dart'; // Import ApiService
+import '../../widget/profile_image_widget.dart';
 
 class ProfileContent extends StatefulWidget {
   const ProfileContent({super.key});
@@ -51,10 +53,58 @@ class _ProfileContentState extends State<ProfileContent> {
 
   // Fungsi untuk logout
   void _logout() async {
-    final preferenceSettingsProvider =
-    Provider.of<PreferenceSettingsProvider>(context, listen: false);
 
     Navigator.pushReplacementNamed(context, Routes.loginScreen);
+  }
+
+  // Fungsi untuk mengupdate gambar profil
+  void _updateProfileImage() async {
+    final profileImageProvider = Provider.of<ProfileImageProvider>(context, listen: false);
+    final jwtToken = Provider.of<PreferenceSettingsProvider>(context, listen: false).jwtToken;
+    final imagePath = profileImageProvider.imagePath;
+    print('JWT Token: $jwtToken');
+    print('Image Path: $imagePath');
+
+    if (jwtToken != null && imagePath != null) {
+      try {
+        await profileImageProvider.updateProfileImage(imagePath);
+        print("Gambar profil berhasil diubah");
+        context.showCustomFlashMessage(
+          status: 'Success',
+          title: 'Gambar profil berhasil diubah',
+          positionBottom: false,
+        );
+      } catch (error) {
+        print("Gagal mengupdate gambar profil: $error");
+        context.showCustomFlashMessage(
+          status: 'Error',
+          title: 'Gagal mengupdate gambar profil: $error',
+          positionBottom: false,
+        );
+      }
+    }
+  }
+
+  Future<void> _updateProfile(String firstName, String lastName) async {
+    final preferenceSettingsProvider = Provider.of<PreferenceSettingsProvider>(context, listen: false);
+    final jwtToken = preferenceSettingsProvider.jwtToken;
+
+    try {
+      await ApiService().updateProfile(jwtToken!, firstName, lastName);
+      // Pembaruan profil berhasil, Anda dapat menambahkan logika tambahan jika diperlukan.
+      context.showCustomFlashMessage(
+        status: 'Success',
+        title: 'Profil berhasil diperbarui',
+        positionBottom: false,
+      );
+    } catch (error) {
+      print("Gagal mengupdate profil: $error");
+      context.showCustomFlashMessage(
+        status: 'Error',
+        title: 'Gagal mengupdate profil: $error',
+        positionBottom: false,
+      );
+    }
   }
 
   @override
@@ -110,12 +160,7 @@ class _ProfileContentState extends State<ProfileContent> {
                     ],
                   ),
                   const SizedBox(height: 40.0),
-                      Image.asset(
-                        // preferenceSettingsProvider.profileImage ??
-                        'assets/mobile_assets/Profile Photo-1.png',
-                        height: 100,
-                        width: 100,
-                      ),
+                  ProfileImageWidget(),
                   const SizedBox(height: 4.0),
                   Text(
                     '${preferenceSettingsProvider.firstName} ${preferenceSettingsProvider.lastName},',
@@ -138,10 +183,13 @@ class _ProfileContentState extends State<ProfileContent> {
                   ButtonWidget(
                     onPress: () {
                       if (isEditingProfile) {
-                        setState(() {
-                          isEditingProfile = false;
-                        });
+                        _updateProfileImage();
+                        final newFirstName = _firstName.text; // Mendapatkan nilai terbaru dari field firstName
+                        final newLastName = _lastName.text;   // Mendapatkan nilai terbaru dari field lastName
+
+                        _updateProfile(newFirstName, newLastName); // Memanggil fungsi _updateProfile
                       } else {
+                        // Ketika bukan dalam mode editing, isEditingProfile diatur ke true
                         setState(() {
                           isEditingProfile = true;
                         });
@@ -155,22 +203,26 @@ class _ProfileContentState extends State<ProfileContent> {
                     paddingVertical: 16.0,
                   ),
 
-
                   SizedBox(height: 16,),
                   ButtonWidget(
                     onPress: () {
                       if (isEditingProfile) {
+                        // Tombol "Batalkan" ditekan
+                        setState(() {
+                          isEditingProfile = false; // Mengembalikan ke keadaan awal
+                        });
                       } else {
                         _logout();
                       }
                     },
                     title: isEditingProfile ? 'Batalkan' : 'Logout',
-                    buttonColor : isEditingProfile? Colors.redAccent : Colors.white,
-                    titleColor: isEditingProfile? Colors.white : Colors.redAccent,
+                    buttonColor: isEditingProfile ? Colors.redAccent : Colors.white,
+                    titleColor: isEditingProfile ? Colors.white : Colors.redAccent,
                     borderColor: Colors.redAccent,
                     paddingHorizontal: 22.0,
                     paddingVertical: 16.0,
                   ),
+
 
                 ],
               ),

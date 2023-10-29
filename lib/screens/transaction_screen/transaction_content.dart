@@ -82,7 +82,7 @@ class _TransactionContentState extends State<TransactionContent> {
                     ],
                   ),
                   const SizedBox(height: 16.0),
-                  BalanceWidget(),
+                  // BalanceWidget(),
                   const SizedBox(height: 40.0),
                   Text(
                     'Transaksi',

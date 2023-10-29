@@ -12,6 +12,7 @@ class PreferenceSettingsProvider extends ChangeNotifier {
   void setJwtToken(String token) {
     jwtToken = token;
     notifyListeners();
+    print("JWT Token set in PreferenceSettingsProvider: $token");
   }
 
   //  method untuk mengupdate nama depan
@@ -25,6 +26,7 @@ class PreferenceSettingsProvider extends ChangeNotifier {
     lastName = name;
     notifyListeners();
   }
+
 
   void setEmail(String name) {
     email = name;

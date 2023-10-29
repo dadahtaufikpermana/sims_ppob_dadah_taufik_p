@@ -96,7 +96,7 @@ class _PaymentContentState extends State<PaymentContent> {
                     ],
                   ),
                   const SizedBox(height: 16.0),
-                  BalanceWidget(),
+                  BalanceWidget(jwtToken: preferenceSettingsProvider.jwtToken ?? "DefaultString"),
                   const SizedBox(height: 40.0),
                   Text(
                     'Pembayaran',

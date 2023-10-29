@@ -40,10 +40,8 @@ class _LoginContentState extends State<LoginContent> {
     super.dispose();
   }
 
-  Future<void> _saveTokenLocally(String jwtToken) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('jwtToken', jwtToken);
-  }
+
+
 
 
   void onPressSignInButton() async {
@@ -54,6 +52,11 @@ class _LoginContentState extends State<LoginContent> {
 
       try {
         final jwtToken = await apiService.loginUser(email: email, password: password);
+        print("JWT Token saat login: $jwtToken");
+
+        // Set jwtToken di PreferenceSettingsProvider
+        final preferenceSettingsProvider = Provider.of<PreferenceSettingsProvider>(context, listen: false);
+        preferenceSettingsProvider.setJwtToken(jwtToken);
 
         context.showCustomFlashMessage(
           status: 'success',
@@ -61,7 +64,6 @@ class _LoginContentState extends State<LoginContent> {
           positionBottom: false,
         );
 
-        await _saveTokenLocally(jwtToken);
         _userProfileManager?.fetchUserProfile(jwtToken); // Ambil profil pengguna setelah login
         _userProfileManager?.fetchBalance(jwtToken); //ambil info saldo
         _userProfileManager?.fetchServices(jwtToken); // ambil list service
@@ -82,6 +84,7 @@ class _LoginContentState extends State<LoginContent> {
       }
     }
   }
+
 
 
 

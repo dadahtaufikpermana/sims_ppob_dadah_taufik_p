@@ -196,6 +196,30 @@ class ApiService {
       throw Exception('Gagal melakukan top up');
     }
   }
+  Future<void> updateProfile(String jwtToken, String firstName, String lastName) async {
+    final Map<String, dynamic> data = {
+      'first_name': firstName,
+      'last_name': lastName,
+    };
 
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $jwtToken',
+    };
+
+    final url = '$baseUrl/profile/update';
+
+    try {
+      final response = await http.put(Uri.parse(url), headers: headers, body: jsonEncode(data));
+
+      if (response.statusCode == 200) {
+        // Jika permintaan berhasil, Anda dapat menambahkan logika tambahan jika diperlukan.
+      } else {
+        throw Exception('Gagal mengupdate profil'); // Anda dapat menambahkan pesan kesalahan yang sesuai.
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
 
 }

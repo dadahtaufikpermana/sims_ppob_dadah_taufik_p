@@ -7,7 +7,9 @@ import '../../../utils/provider/user_profile_manager.dart';
 import '../../../utils/style.dart';
 
 class BalanceWidget extends StatefulWidget {
-  const BalanceWidget({Key? key}) : super(key: key);
+  final String jwtToken;
+
+  BalanceWidget({required this.jwtToken});
 
   @override
   _BalanceWidgetState createState() => _BalanceWidgetState();
@@ -29,14 +31,14 @@ class _BalanceWidgetState extends State<BalanceWidget> {
   }
 
   // Metode untuk mengambil saldo
-  void _fetchBalance() async {
-    final userProfileManager = UserProfileManager(context);
-    final jwtToken = userProfileManager.getJwtToken();
-
-    if (jwtToken != null) {
-      userProfileManager.fetchBalance(jwtToken);
-    }
+  void _fetchBalance() {
+    final userProfileManager = Provider.of<UserProfileManager>(context, listen: false);
+    final preferenceSettingsProvider = Provider.of<PreferenceSettingsProvider>(context, listen: false);
+    final jwtToken = preferenceSettingsProvider.jwtToken; // Mengambil jwtToken dari PreferenceSettingsProvider
+    userProfileManager.fetchBalance(jwtToken!);
   }
+
+
 
   @override
   Widget build(BuildContext context) {

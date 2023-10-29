@@ -35,22 +35,12 @@ class _ProfileFormWidgetState extends State<ProfileFormWidget> {
             AccesorFormFiled(
               hintText: '${preferenceSettingsProvider.email}',
               controller: widget.emailController,
-              validator: (e) => inspection(
-                e,
-                'required|email',
-                message: 'Kolom email harus di isi dan di isi dengan email',
-              ),
               prefixIcon: Icon(Icons.alternate_email),
               child: const FormLabelFieldWidget(),
             ),
             AccesorFormFiled(
               hintText: '${preferenceSettingsProvider.firstName}',
               controller: widget.firstNameController,
-              validator: (e) => inspection(
-                e,
-                'required',
-                message: 'Kolom nama depan harus di isi',
-              ),
               prefixIcon: Icon(Icons.person_2_outlined),
               child: const FormLabelFieldWidget(),
             ),
