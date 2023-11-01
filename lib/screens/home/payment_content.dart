@@ -11,6 +11,7 @@ import '../../../utils/style.dart';
 import '../../data/api/api_service.dart';
 import '../../utils/provider/user_profile_manager.dart';
 import '../../widget/button_widget.dart';
+import '../../widget/custom_dialog.dart';
 
 class PaymentContent extends StatefulWidget {
   const PaymentContent({Key? key}) : super(key: key);
@@ -26,7 +27,8 @@ class _PaymentContentState extends State<PaymentContent> {
   double? selectedNominal;
   String? selectedServiceIcon;
   String? selectedServiceName;
-  double? serviceTariff;
+  int? serviceTariff;
+  String? selectedServiceCode;
 
   @override
   void initState() {
@@ -49,6 +51,8 @@ class _PaymentContentState extends State<PaymentContent> {
       selectedServiceIcon = args['icon'];
       selectedServiceName = args['name'];
       serviceTariff = args['tariff'];
+      selectedServiceCode = args['code'];
+      print('serviceTariff in PaymentContent: $serviceTariff $selectedServiceName');
 
     }
 
@@ -86,7 +90,7 @@ class _PaymentContentState extends State<PaymentContent> {
                       Padding(
                         padding: const EdgeInsets.only(left: 70.0),
                         child: Text(
-                          'Top Up',
+                          'Pembayaran',
                           style: theme.textTheme.headline4!.copyWith(
                             fontSize: 14,
                             color: blackColor20,
@@ -99,7 +103,7 @@ class _PaymentContentState extends State<PaymentContent> {
                   BalanceWidget(jwtToken: preferenceSettingsProvider.jwtToken ?? "DefaultString"),
                   const SizedBox(height: 40.0),
                   Text(
-                    'Pembayaran',
+                    'Bayar',
                     style: theme.textTheme.headline4!.copyWith(
                       fontSize: 16,
                       color: blackColor,
@@ -130,8 +134,10 @@ class _PaymentContentState extends State<PaymentContent> {
 
                   const SizedBox(height: 32.0),
                   ButtonWidget(
-                    onPress: (){},
-                    title: 'Pembayaran',
+                    onPress: (){
+                      showCustomDialog(context, serviceTariff!, selectedServiceName!, selectedServiceCode!);
+                    },
+                    title: 'Bayar',
                     buttonColor: selectedNominal != null
                         ? theme.primaryColor
                         : Colors.grey,

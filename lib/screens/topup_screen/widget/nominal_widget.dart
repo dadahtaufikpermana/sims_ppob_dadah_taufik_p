@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inspection/inspection.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';  // Import library untuk NumberFormat
 
 import '../../../utils/access_form_field.dart';
 import '../../../utils/provider/prefference_setting_provider.dart';
@@ -19,24 +20,25 @@ class NominalWidget extends StatefulWidget {
 }
 
 class _NominalWidgetState extends State<NominalWidget> {
-
   String? _validateNominal(String? value) {
-    final isNotEmpty = inspection(value, 'required|', message: '');
-    if (isNotEmpty != null) {
-      return isNotEmpty;
+    if (value == null || value.isEmpty) {
+      return '';
     }
 
-    final nominal = double.tryParse(value ?? '0.0');
-    if (nominal == null || nominal < 10000) {
+    final format = NumberFormat.decimalPattern('id');
+    final formattedValue = format.parse(value);
+
+    if (formattedValue < 10000) {
       return 'Minimal topup adalah 10.000';
     }
 
-    if (nominal > 1000000) {
+    if (formattedValue > 1000000) {
       return 'Maksimal topup adalah 1.000.000';
     }
 
     return null;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +49,7 @@ class _NominalWidgetState extends State<NominalWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AccesorFormFiled(
+              prefixText : "Rp. ",
               hintText: 'Masukkan nominal topup',
               controller: widget.nominalController,
               validator: _validateNominal,
@@ -60,4 +63,3 @@ class _NominalWidgetState extends State<NominalWidget> {
     );
   }
 }
-

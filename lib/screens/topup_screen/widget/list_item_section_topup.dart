@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'item_section_topup.dart';
 
 class ListTopUpSection extends StatelessWidget {
-  final Function(String) onPressTopUp;
+  final Function(int) onPressTopUp;
 
   ListTopUpSection({required this.onPressTopUp});
 
@@ -15,13 +16,15 @@ class ListTopUpSection extends StatelessWidget {
           crossAxisCount: 3,
           shrinkWrap: true,
           childAspectRatio: 2.0,
+          mainAxisSpacing: 16.0, // Jarak antara baris (vertikal)
+          crossAxisSpacing: 8.0, // Jarak antara item secara horizontal
           children: [
-            TopUpItem('Rp. 10.000', onPressTopUp),
-            TopUpItem('Rp. 20.000', onPressTopUp),
-            TopUpItem('Rp. 50.000', onPressTopUp),
-            TopUpItem('Rp. 100.000', onPressTopUp),
-            TopUpItem('Rp. 200.000', onPressTopUp),
-            TopUpItem('Rp. 250.000', onPressTopUp),
+            TopUpItem(10000, onPressTopUp),
+            TopUpItem(20000, onPressTopUp),
+            TopUpItem(50000, onPressTopUp),
+            TopUpItem(100000, onPressTopUp),
+            TopUpItem(200000, onPressTopUp),
+            TopUpItem(250000, onPressTopUp),
           ],
         ),
       ],

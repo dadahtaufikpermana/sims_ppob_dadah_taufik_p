@@ -65,7 +65,7 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
             radius: 50,
             backgroundColor: Colors.white,
           )
-        else if (profileImage != null)
+        else if (profileImage != null && profileImage != "https://minio.nutech-integrasi.app/take-home-test/null")
           CircleAvatar(
             backgroundImage: NetworkImage(profileImage),
             radius: 50,

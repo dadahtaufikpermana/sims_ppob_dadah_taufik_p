@@ -14,6 +14,7 @@ class FormFieldWidget extends StatelessWidget {
   final int maxLength;
   final int? maxLines;
   final Widget prefixIcon;
+  final String? prefixText;
 
   final VoidCallback? onPressSufixobscureTextIcon;
   final String? Function(String?)? onSubmitted;
@@ -32,6 +33,7 @@ class FormFieldWidget extends StatelessWidget {
     this.onPressSufixobscureTextIcon,
     this.textInputAction = TextInputAction.next,
     this.textInputType = TextInputType.text,
+    this.prefixText,
   }) : super(key: key);
 
   @override
@@ -67,6 +69,10 @@ class FormFieldWidget extends StatelessWidget {
             ),
           )
               : null,
+          prefixText: prefixText,
+          prefixStyle: TextStyle(
+            fontSize: 16,
+          ),
           hintStyle: context.theme.textTheme.subtitle1?.copyWith(
             color: grayColor,
           ),

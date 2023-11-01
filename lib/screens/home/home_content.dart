@@ -51,6 +51,8 @@ class _HomeContentState extends State<HomeContent> {
 
     return Consumer<PreferenceSettingsProvider>(
       builder: (context, preferenceSettingsProvider, _) {
+        final profileImage = preferenceSettingsProvider.profileImage;
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -78,12 +80,15 @@ class _HomeContentState extends State<HomeContent> {
                         ),
                       ),
                       Spacer(),
-                      Image.asset(
-                        // preferenceSettingsProvider.profileImage ??
-                        'assets/mobile_assets/Profile Photo-1.png',
-                        height: 30,
-                        width: 30,
-                      ),
+                      CircleAvatar(
+                        backgroundImage: profileImage != null && profileImage != "https://minio.nutech-integrasi.app/take-home-test/null"
+                            ? Image.network(profileImage).image
+                            : Image.asset('assets/mobile_assets/Profile Photo-1.png').image,
+                        radius: 20,
+                        backgroundColor: Colors.white,
+                      )
+
+
                     ],
                   ),
                   const SizedBox(height: 40.0),
@@ -105,8 +110,8 @@ class _HomeContentState extends State<HomeContent> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32.0),
-                BalanceWidget(jwtToken: preferenceSettingsProvider.jwtToken ?? "DefaultString"),
-                const SizedBox(height: 38.0),
+                  BalanceWidget(jwtToken: preferenceSettingsProvider.jwtToken ?? "DefaultString"),
+                  const SizedBox(height: 38.0),
                   ListServiceWidget(),
                   Text(
                     'Temukan Promo Terbaik',
@@ -127,4 +132,5 @@ class _HomeContentState extends State<HomeContent> {
       },
     );
   }
+
 }

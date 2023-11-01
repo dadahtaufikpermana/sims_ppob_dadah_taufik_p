@@ -29,6 +29,18 @@ class _TopupContentState extends State<TopupContent> {
     super.initState();
     userProfileManager = UserProfileManager(context);
     _nominalTopup = TextEditingController();
+    _nominalTopup.addListener(() {
+      final enteredValue = double.tryParse(_nominalTopup.text.replaceAll('Rp. ', '').replaceAll(',', '')) ?? 0.0;
+      if (enteredValue >= 10000) {
+        setState(() {
+          selectedNominal = enteredValue;
+        });
+      } else {
+        setState(() {
+          selectedNominal = null;
+        });
+      }
+    });
   }
 
   @override
@@ -47,11 +59,11 @@ class _TopupContentState extends State<TopupContent> {
     if (_formState.currentState?.validate() == true) {
       final apiService = ApiService();
       final preferenceSettingsProvider = Provider.of<PreferenceSettingsProvider>(context, listen: false);
-      final jwtToken = preferenceSettingsProvider.jwtToken; // Mengambil jwtToken dari PreferenceSettingsProvider
+      final jwtToken = preferenceSettingsProvider.jwtToken;
       userProfileManager.fetchBalance(jwtToken!);
 
       if (jwtToken != null) {
-        double topUpAmount = double.tryParse(_nominalTopup.text) ?? 0.0;
+        double topUpAmount = selectedNominal ?? double.tryParse(_nominalTopup.text) ?? 0.0;
 
         if (topUpAmount < 10000) {
           context.showCustomFlashMessage(
@@ -87,7 +99,6 @@ class _TopupContentState extends State<TopupContent> {
       }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +151,7 @@ class _TopupContentState extends State<TopupContent> {
                   BalanceWidget(jwtToken: preferenceSettingsProvider.jwtToken ?? "DefaultString"),
                   const SizedBox(height: 40.0),
                   Text(
-                    'Silahkan masukan',
+                    'Silahkan masukkan',
                     style: theme.textTheme.headline4!.copyWith(
                       fontSize: 24,
                       color: blackColor,
@@ -163,26 +174,22 @@ class _TopupContentState extends State<TopupContent> {
                     ),
                   ),
                   ListTopUpSection(
-                    onPressTopUp: (nominal) {
-                      _nominalTopup.text = nominal;
-                      onPressTopUpButton();
-                    },
+                    onPressTopUp: onTopUpSelected,
                   ),
                   const SizedBox(height: 32.0),
                   ButtonWidget(
-                    onPress: _nominalTopup.text.isNotEmpty ? onPressTopUpButton! : () {},
+                    onPress: _nominalTopup.text.isNotEmpty ? onPressTopUpButton : () {},
                     title: 'Top Up',
                     buttonColor: selectedNominal != null
-                        ? theme.primaryColor
+                        ? Colors.redAccent
                         : Colors.grey,
                     titleColor: whiteColor,
                     borderColor: selectedNominal != null
-                        ? theme.primaryColor
+                        ? Colors.redAccent
                         : Colors.grey,
                     paddingHorizontal: 22.0,
                     paddingVertical: 16.0,
                   )
-
 
                 ],
               ),
