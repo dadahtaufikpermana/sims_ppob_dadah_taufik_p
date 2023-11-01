@@ -7,6 +7,9 @@ import '../models/banner_model.dart';
 import '../models/profile_model.dart';
 import '../models/service_model.dart';
 import '../models/topup_model.dart';
+import '../models/transaction_model.dart';
+import '../models/transaction_model_history.dart' as history;
+import '../models/transaction_model_history.dart';
 
 class ApiService {
   final String baseUrl = "https://take-home-test-api.nutech-integrasi.app";
@@ -196,7 +199,9 @@ class ApiService {
       throw Exception('Gagal melakukan top up');
     }
   }
-  Future<void> updateProfile(String jwtToken, String firstName, String lastName) async {
+
+  Future<void> updateProfile(
+      String jwtToken, String firstName, String lastName) async {
     final Map<String, dynamic> data = {
       'first_name': firstName,
       'last_name': lastName,
@@ -210,16 +215,52 @@ class ApiService {
     final url = '$baseUrl/profile/update';
 
     try {
-      final response = await http.put(Uri.parse(url), headers: headers, body: jsonEncode(data));
+      final response = await http.put(Uri.parse(url),
+          headers: headers, body: jsonEncode(data));
 
       if (response.statusCode == 200) {
         // Jika permintaan berhasil, Anda dapat menambahkan logika tambahan jika diperlukan.
       } else {
-        throw Exception('Gagal mengupdate profil'); // Anda dapat menambahkan pesan kesalahan yang sesuai.
+        throw Exception(
+            'Gagal mengupdate profil'); // Anda dapat menambahkan pesan kesalahan yang sesuai.
       }
     } catch (error) {
       throw error;
     }
   }
+
+  Future<TransactionModel> postTransaction(
+      String jwtToken, String serviceCode) async {
+    final url = '$baseUrl/transaction';
+
+    final Map<String, dynamic> data = {
+      "service_code": serviceCode,
+    };
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $jwtToken',
+    };
+
+    final response = await http.post(Uri.parse(url),
+        headers: headers, body: jsonEncode(data));
+
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+      return TransactionModel.fromJson(responseData);
+    } else {
+      throw Exception('Gagal membuat transaksi');
+    }
+  }
+
+
+
+
+
+
+
+
+
+
 
 }

@@ -11,7 +11,6 @@ class FormLabelFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
     AccesorFormFiled? accessor = AccesorFormFiled.of(context);
 
     return Column(
@@ -29,6 +28,7 @@ class FormLabelFieldWidget extends StatelessWidget {
           showObscureToggle: accessor.showObscureToggle,
           onPressSufixobscureTextIcon: accessor.onPressSufixobscureTextIcon,
           prefixIcon: accessor.prefixIcon,
+          prefixText : accessor.prefixText
         ),
       ],
     );

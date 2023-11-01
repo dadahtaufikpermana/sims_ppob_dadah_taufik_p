@@ -12,6 +12,7 @@ class AccesorFormFiled extends InheritedWidget {
   final int maxLength;
   final int? maxLines;
   final Icon prefixIcon;
+  final String? prefixText;
 
   const AccesorFormFiled({
     Key? key,
@@ -24,6 +25,7 @@ class AccesorFormFiled extends InheritedWidget {
     this.showObscureToggle = false,
     this.maxLength = 30,
     this.maxLines,
+    this.prefixText,
     this.onPressSufixobscureTextIcon,
     this.textInputAction = TextInputAction.next,
     this.textInputType = TextInputType.text,

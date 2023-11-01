@@ -7,6 +7,7 @@ import 'package:sims_ppob_dadah_taufik_p/utils/provider/banner_provider.dart';
 import 'package:sims_ppob_dadah_taufik_p/utils/provider/prefference_setting_provider.dart';
 import 'package:sims_ppob_dadah_taufik_p/utils/provider/profile_image_provider.dart';
 import 'package:sims_ppob_dadah_taufik_p/utils/provider/service_model_provider.dart';
+import 'package:sims_ppob_dadah_taufik_p/utils/provider/transaction_history_provider.dart';
 import 'package:sims_ppob_dadah_taufik_p/utils/provider/user_profile_manager.dart';
 
 void main() {
@@ -18,6 +19,7 @@ void main() {
         ),
         ChangeNotifierProvider(create: (_) => ServiceProvider()),
         ChangeNotifierProvider(create: (_) => BannerProvider()),
+        ChangeNotifierProvider(create: (context) => TransactionHistoryProvider()),
         ChangeNotifierProvider(create: (context) => UserProfileManager(context)),
         ChangeNotifierProvider(
           create: (context) => ProfileImageProvider(

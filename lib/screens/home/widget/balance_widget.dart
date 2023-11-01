@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sims_ppob_dadah_taufik_p/extensions/context_extensions.dart';
 
@@ -48,6 +49,7 @@ class _BalanceWidgetState extends State<BalanceWidget> {
     return Consumer<PreferenceSettingsProvider>(
       builder: (context, preferenceSettingsProvider, _) {
         balance = preferenceSettingsProvider.balance;
+        final currencyFormat = NumberFormat.currency(locale: 'id', symbol: 'Rp.');
 
         return Stack(
           children: <Widget>[
@@ -76,8 +78,8 @@ class _BalanceWidgetState extends State<BalanceWidget> {
                         children: <InlineSpan>[
                           TextSpan(
                             text: obscureText
-                                ? "Rp " + '●' * 6
-                                : 'Rp ${balance != null ? balance.toString() : '0'}',
+                                ? "Rp " + '●' * (balance != null ? balance.toString().length : 1)
+                                : currencyFormat.format(balance ?? 0),
                             style: theme.textTheme.headline4!.copyWith(
                               fontSize: 24,
                               color: whiteColor,

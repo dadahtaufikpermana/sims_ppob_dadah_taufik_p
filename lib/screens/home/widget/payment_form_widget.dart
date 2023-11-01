@@ -8,7 +8,7 @@ import '../../../widget/form_label_field_widget.dart';
 
 class PaymentFormWidget extends StatefulWidget {
   final TextEditingController paymentController;
-  final double? serviceTariff;
+  final int? serviceTariff;
 
   const PaymentFormWidget({
     Key? key,
@@ -25,6 +25,7 @@ class _PaymentFormWidgetState extends State<PaymentFormWidget> {
 
   @override
   Widget build(BuildContext context) {
+    print('serviceTariff: ${widget.serviceTariff}');
     return Consumer<PreferenceSettingsProvider>(
       builder: (context, preferenceSettingsProvider, _) {
         return Column(
@@ -32,10 +33,9 @@ class _PaymentFormWidgetState extends State<PaymentFormWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AccesorFormFiled(
-              hintText: widget.serviceTariff != null ? widget.serviceTariff.toString() : '',
+              hintText: widget.serviceTariff != null ? 'Rp. ' + widget.serviceTariff.toString() : '',
               controller: widget.paymentController,
               prefixIcon: Icon(Icons.insert_chart_outlined),
-              textInputType: TextInputType.number,
               child: const FormLabelFieldWidget(),
             ),
           ],

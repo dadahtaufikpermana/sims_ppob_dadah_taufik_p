@@ -1,14 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TransactionItem extends StatelessWidget {
-  final String amount;
-  final String date;
-  final String status;
+  final String description;
+  final int totalAmount;
+  final String createdOn;
+  final String transactionType;
 
-  TransactionItem({required this.amount, required this.date, required this.status});
+  TransactionItem({
+    required this.description,
+    required this.totalAmount,
+    required this.createdOn,
+    required this.transactionType,
+  });
 
+  String formattedDate(String createdOn) {
+    DateTime dateTime = DateTime.parse(createdOn);
+    String formattedDate = "${dateTime.day} ${_getMonthName(dateTime.month)} ${dateTime.year} ${dateTime.hour}:${dateTime.minute} WIB";
+    return formattedDate;
+  }
+
+  String _getMonthName(int month) {
+    final monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    return monthNames[month - 1];
+  }
   @override
   Widget build(BuildContext context) {
+    Color amountColor = Colors.green;
+    String amountText =  "+ Rp." + NumberFormat.decimalPattern('id').format(totalAmount);
+
+    if (transactionType == 'PAYMENT') {
+      amountColor = Colors.red;
+      amountText = "-  Rp. " + NumberFormat.decimalPattern('id').format(totalAmount);
+    }
+
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey),
@@ -23,23 +48,26 @@ class TransactionItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '+Rp. $amount',
+                amountText,
                 style: TextStyle(
                   fontSize: 18,
-                  color: Colors.deepOrange,
+                  color: amountColor,
                 ),
               ),
-              Text(
-                'Date: $date',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  formattedDate(createdOn),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                  ),
                 ),
               ),
             ],
           ),
           Text(
-            status,
+            description,
             style: TextStyle(
               fontSize: 12,
               color: Colors.black,

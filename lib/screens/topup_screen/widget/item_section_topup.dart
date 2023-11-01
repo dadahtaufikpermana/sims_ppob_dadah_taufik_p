@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // Import NumberFormat
 
 class TopUpItem extends StatelessWidget {
-  final String nominal;
-  final Function(String) onPressTopUp;
+  final int? nominal;
+  final Function(int) onPressTopUp;
 
   TopUpItem(this.nominal, this.onPressTopUp);
 
@@ -10,7 +11,7 @@ class TopUpItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        onPressTopUp(nominal); // Panggil onPressTopUp dengan nilai nominal yang dipilih
+        onPressTopUp(nominal!);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -19,7 +20,7 @@ class TopUpItem extends StatelessWidget {
         ),
         alignment: Alignment.center,
         child: Text(
-          nominal,
+          "Rp. " + NumberFormat.decimalPattern('id').format(nominal),
           style: TextStyle(
             fontSize: 16,
             color: Colors.black,
@@ -29,3 +30,4 @@ class TopUpItem extends StatelessWidget {
     );
   }
 }
+

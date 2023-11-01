@@ -20,6 +20,8 @@ class ServiceItem extends StatelessWidget {
           arguments: {
             'icon': service.serviceIcon,
             'name': service.serviceName,
+            'tariff' : service.serviceTariff,
+            'code' : service.serviceCode
           },
         );
       },

@@ -18,8 +18,10 @@ class ServiceProvider with ChangeNotifier {
       final apiService = ApiService();
       final services = await apiService.getServices(jwtToken);
       setServices(services);
+      print('services in ServiceProvider: $services');
     } catch (error) {
       print(error.toString());
     }
   }
+
 }
